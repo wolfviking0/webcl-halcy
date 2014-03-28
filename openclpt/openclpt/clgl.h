@@ -7,9 +7,14 @@
 
 #include <cstdio>
 
-#include "GL/glew.h"
-#include "GL/freeglut.h"
-#include "CL/opencl.h"
+#ifdef __APPLE__
+#include <OpenGL/Opengl.h>
+#include <GLUT/glut.h>
+#include <OpenCL/OpenCL.h>
+#else
+#include <GL/glut.h>
+#include <CL/OpenCL.h>
+#endif
 
 #define SAFE_RELEASE(c, x) if(x != NULL){c(x); x = NULL;}
 

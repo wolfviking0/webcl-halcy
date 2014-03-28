@@ -64,6 +64,15 @@ void acquireSharedOpenCLContext() {
             0 
         };
         openCLState.context = clCreateContext(props, 0,0, NULL, NULL, &clError);
+    #elif __EMSCRIPTEN__
+        cl_context_properties props[] = 
+        {
+            CL_GL_CONTEXT_KHR, (cl_context_properties)0, 
+            CL_GLX_DISPLAY_KHR, (cl_context_properties)0, 
+            CL_CONTEXT_PLATFORM, (cl_context_properties)openCLState.platformId, 
+            0
+        };
+        openCLState.context = clCreateContext(props, 1, &openCLState.deviceId, NULL, NULL, &clError);
     #else
         #ifndef _WIN32 // Lunix
             cl_context_properties props[] = 

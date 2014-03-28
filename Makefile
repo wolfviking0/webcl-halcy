@@ -104,6 +104,7 @@ openclpt_preload = --preload-file camera_complex.cam --preload-file camera_null.
 endif
 openclpt_sample:
 	$(call chdir,openclpt/openclpt/)
+	mkdir -p ../../build/out/
 	cp *.cl ../../build/out/
 	cp *.frag ../../build/out/
 	cp *.vert ../../build/out/	
@@ -129,6 +130,7 @@ simpleflow_preload = --preload-file grand_canyon.pgm --preload-file sand.tga --p
 endif
 simpleflow_sample:
 	$(call chdir,simpleflow/WaterSim2/)
+	mkdir -p ../../build/out/
 	cp *.cl ../../build/out/
 	cp *.tga ../../build/out/
 	cp *.pgm ../../build/out/

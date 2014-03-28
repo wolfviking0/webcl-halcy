@@ -355,9 +355,11 @@ void __stdcall debugCallback(
 // Debug context logger registration
 void registerGlDebugLogger(unsigned int logLevel) {
 	glDebugLogLevel = logLevel;
+	#ifdef _WIN32
 	glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
 	glDebugMessageControl = (PFNGLDEBUGMESSAGECONTROLARBPROC) wglGetProcAddress("glDebugMessageControlARB");
 	glDebugMessageCallback = (PFNGLDEBUGMESSAGECALLBACKARBPROC) wglGetProcAddress("glDebugMessageCallbackARB");
 	glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DONT_CARE, 0, NULL, GL_TRUE);
 	glDebugMessageCallback(&debugCallback, NULL);
+	#endif
 }
