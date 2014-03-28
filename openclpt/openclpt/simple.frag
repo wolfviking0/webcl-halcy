@@ -1,6 +1,4 @@
-#version 100
-
-precision mediump float;
+#version 120
 
 // Simple texture display shader
 // Displays texture with coords
@@ -19,7 +17,7 @@ uniform sampler2D displayTexture;
 //out vec4 outColor;
 
 void main() {
-	gl_FragColor = (texture(displayTexture, coords) / userScale) / iterCount;
+	gl_FragColor = (texture2D(displayTexture, coords) / userScale) / iterCount;
 }
 
 /*

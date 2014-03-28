@@ -8,7 +8,8 @@
 #include <cstdio>
 
 #ifdef __APPLE__
-#include <OpenGL/Opengl.h>
+#include <OpenGL/gl.h>
+#include <OpenGL/glext.h>
 #include <GLUT/glut.h>
 #include <OpenCL/OpenCL.h>
 #else

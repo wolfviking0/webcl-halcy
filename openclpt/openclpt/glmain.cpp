@@ -64,7 +64,7 @@ float* zeroPixels;
 // Forward declaration
 void draw();
 void update();
-void updateI(int);
+void updateV();
 void handleKeypress(unsigned char k, int x, int y);
 
 // Per pixel RNG texture
@@ -99,12 +99,12 @@ void makeWindow(int argc, char** argv) {
 	#endif
 		
 	// Use GLEW, and make sure it imports EVERYTHING
-	glewExperimental = GL_TRUE;
-	glewInit();
+	//glewExperimental = GL_TRUE;
+	//glewInit();
 
-	#ifdef DEBUG
-		registerGlDebugLogger(GL_DEBUG_SEVERITY_MEDIUM);
-	#endif
+	//#ifdef DEBUG
+	//	registerGlDebugLogger(GL_DEBUG_SEVERITY_MEDIUM);
+	//#endif
 
 	// Set up OpenGL features
 	glEnable(GL_DEPTH_TEST);
@@ -117,16 +117,21 @@ void makeWindow(int argc, char** argv) {
 // Functions that glut calls for us
 void setupGlutCallbacks() {
 	glutDisplayFunc(draw);
-	glutTimerFunc(15, updateI, 0);
+	glutIdleFunc(updateV);
+	//glutTimerFunc(15, updateI, 0);
 	glutKeyboardFunc(handleKeypress);
 }
 
 // Initialize buffers, textures, etc.
 void initObjects() {
 	// Create a VAO and bind it
-	glGenVertexArrays(1, &vertexArray);
-	glBindVertexArray(vertexArray);
-
+	#ifdef __APPLE__
+		glGenVertexArraysAPPLE(1, &vertexArray);
+		glBindVertexArrayAPPLE(vertexArray);
+	#else
+		glGenVertexArrays(1, &vertexArray);
+		glBindVertexArray(vertexArray);
+	#endif
 	// Prepare a screen quad to render postprocessed things.
 	vec3_t quadData[] = {
 		{-1.0f, -1.0f, 0.0f, 1.0f},
@@ -155,8 +160,8 @@ void initObjects() {
 		zeroPixels[i] = 0.0f;
 	}
 	for(int i = 0; i < 2; i++) {
-		displayShader.texture[i] = makeTextureBuffer(WINDOW_WIDTH, WINDOW_HEIGHT, GL_RGBA, GL_RGBA32F);
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA32F, WINDOW_WIDTH, WINDOW_HEIGHT, 0, GL_RGBA, GL_FLOAT, zeroPixels);
+		displayShader.texture[i] = makeTextureBuffer(WINDOW_WIDTH, WINDOW_HEIGHT, GL_RGBA, GL_RGBA32F_ARB);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA32F_ARB, WINDOW_WIDTH, WINDOW_HEIGHT, 0, GL_RGBA, GL_FLOAT, zeroPixels);
 		tracer.renderBuffer[i] = clCreateFromGLTexture2D(clContext(), CL_MEM_READ_WRITE, GL_TEXTURE_2D, 0, displayShader.texture[i], 0);
 	}
 
@@ -189,19 +194,23 @@ void initShaders() {
 	displayShader.userScale =  glGetUniformLocation(displayShader.shaderProgram, "userScale");
 	
 	// Bind output variables
+	#ifdef __APPLE__
+	glBindFragDataLocationEXT(displayShader.shaderProgram, 0, "outColor");
+	#else
 	glBindFragDataLocation(displayShader.shaderProgram, 0, "outColor");
+	#endif
 }
 
 //////////////////////// UPDATING AND DRAWING ////////////////////////////////////////
 
 // Update status variables.
 // Called every 15ms, unless the PC is too slow.
-void updateI(int) { update(); }
+void updateV(void) { glutPostRedisplay(); }
 
 void update() {
 	// Redraw screen now, please, and call again in 15ms.
 	glutPostRedisplay();
-	glutTimerFunc(15, updateI, 0);
+	//glutTimerFunc(15, updateI, 0);
 
 	#ifdef _WIN32
 	if(!cameraLock) {
@@ -637,7 +646,7 @@ void handleKeypress(unsigned char k, int x, int y) {
 
 // Set things up and run
 int main(int argc, char** argv) {
-	int gridExtent = 128;
+	int gridExtent = 32;
 	char* sceneFile = strdup("smallbox.obj");
 	char* matFile = strdup("matlib.mat");
 	char* camFileName = strdup("camera_null.cam");

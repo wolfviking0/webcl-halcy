@@ -293,6 +293,7 @@ GLuint genFloatTexture(float *data, int width, int height) {
 
 // Debug context log printer
 void printDebugLog(unsigned int source, unsigned int type, unsigned int id, unsigned int severity, const char* message) {
+	#ifdef _WIN32
 	char debSource[16], debType[20], debSev[5];
     if(source == GL_DEBUG_SOURCE_API)
         strcpy(debSource, "OpenGL");
@@ -328,10 +329,15 @@ void printDebugLog(unsigned int source, unsigned int type, unsigned int id, unsi
         strcpy(debSev, "Low");
 
     printf("GL: Source:%s\tType:%s\tID:%d\tSeverity:%s\tMessage:%s\n", debSource, debType, id, debSev, message);
+    #else
+	printf("GL: Source:%d\tType:%d\tID:%d\tSeverity:%d\tMessage:%s\n", source, type, id, severity, message);
+    #endif
 }
 
 // Debug context log callback
+#ifdef _WIN32
 unsigned int glDebugLogLevel = GL_DEBUG_SEVERITY_LOW;
+#endif
 void __stdcall debugCallback(
 	GLenum source,
 	GLenum type,
@@ -341,6 +347,7 @@ void __stdcall debugCallback(
 	const GLchar* message,
 	GLvoid* userParam
 ) {
+	#ifdef _WIN32
 	if((glDebugLogLevel == GL_DEBUG_SEVERITY_LOW) ||
 	   ((glDebugLogLevel == GL_DEBUG_SEVERITY_MEDIUM) && (severity != GL_DEBUG_SEVERITY_LOW)) ||
 	   (severity == GL_DEBUG_SEVERITY_HIGH)) {
@@ -349,12 +356,13 @@ void __stdcall debugCallback(
 	if(severity == GL_DEBUG_SEVERITY_HIGH) {
 		getc(stdin);
 	}
+	#endif
 }
 
 // Debug context logger registration
 void registerGlDebugLogger(unsigned int logLevel) {
-	glDebugLogLevel = logLevel;
 	#ifdef _WIN32
+	glDebugLogLevel = logLevel;
 	glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
 	glDebugMessageControl = (PFNGLDEBUGMESSAGECONTROLARBPROC) wglGetProcAddress("glDebugMessageControlARB");
 	glDebugMessageCallback = (PFNGLDEBUGMESSAGECALLBACKARBPROC) wglGetProcAddress("glDebugMessageCallbackARB");

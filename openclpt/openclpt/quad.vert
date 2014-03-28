@@ -1,4 +1,4 @@
-#version 100
+#version 120
 
 // Screen-sized-quad vertex shader
 

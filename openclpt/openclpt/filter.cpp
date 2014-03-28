@@ -33,11 +33,11 @@ void prepareFilter(cl_program program, int width, int height) {
 	filter.convVerticalKernel = clCreateKernel(program, "ConvVertical", NULL);
 
 	// Create buffers
-	filter.normalsDepthTexture = makeTextureBuffer(width, height, GL_RGBA, GL_RGBA32F);
+	filter.normalsDepthTexture = makeTextureBuffer(width, height, GL_RGBA, GL_RGBA32F_ARB);
 	filter.normalsDepthBuffer = clCreateFromGLTexture2D(clContext(), CL_MEM_READ_WRITE, GL_TEXTURE_2D, 0, filter.normalsDepthTexture, 0);
-	filter.tempTexture = makeTextureBuffer(width, height, GL_RGBA, GL_RGBA32F);
+	filter.tempTexture = makeTextureBuffer(width, height, GL_RGBA, GL_RGBA32F_ARB);
 	filter.tempBuffer = clCreateFromGLTexture2D(clContext(), CL_MEM_READ_WRITE, GL_TEXTURE_2D, 0, filter.tempTexture, 0);
-	filter.resultTexture = makeTextureBuffer(width, height, GL_RGBA, GL_RGBA32F);
+	filter.resultTexture = makeTextureBuffer(width, height, GL_RGBA, GL_RGBA32F_ARB);
 	filter.resultBuffer = clCreateFromGLTexture2D(clContext(), CL_MEM_READ_WRITE, GL_TEXTURE_2D, 0, filter.resultTexture, 0);
 	filter.discBuffer = clCreateBuffer(
 		clContext(), 
