@@ -183,8 +183,13 @@ void initPrograms() {
 // Initialize shaders.
 void initShaders() {
 	// Load a simple display-that-thing Vertex/Fragment shader
+	#ifdef __APPLE__
+	GLuint vertexShader = loadShader(GL_VERTEX_SHADER, "openclpt_quad_osx.vert");
+	GLuint fragmentShader = loadShader(GL_FRAGMENT_SHADER, "openclpt_simple_osx.frag");
+	#else
 	GLuint vertexShader = loadShader(GL_VERTEX_SHADER, "quad.vert");
 	GLuint fragmentShader = loadShader(GL_FRAGMENT_SHADER, "simple.frag");
+	#endif
 	displayShader.shaderProgram = makeShaderProgram(vertexShader, fragmentShader);
 
 	// Get locations of attributes and uniforms used inside.

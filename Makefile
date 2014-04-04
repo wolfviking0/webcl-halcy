@@ -116,7 +116,7 @@ VALPARAM_simpleflow		=	-s CL_VAL_PARAM='[""]'
 
 else
 
-COPY_openclpt			= 	cp camera_complex.cam $(BUILD_FOLDER) && cp camera_null.cam $(BUILD_FOLDER) && cp camera.cam $(BUILD_FOLDER) && cp tracer.cl $(BUILD_FOLDER) && cp simple.frag $(BUILD_FOLDER) && cp quad.vert $(BUILD_FOLDER) && cp kitbox.obj $(BUILD_FOLDER) && cp matlib.mat $(BUILD_FOLDER) && cp smallbox.obj $(BUILD_FOLDER) && 
+COPY_openclpt			= 	cp camera_complex.cam $(BUILD_FOLDER) && cp camera_null.cam $(BUILD_FOLDER) && cp camera.cam $(BUILD_FOLDER) && cp tracer.cl $(BUILD_FOLDER) && cp openclpt_simple_osx.frag $(BUILD_FOLDER) && cp openclpt_quad_osx.vert $(BUILD_FOLDER) && cp kitbox.obj $(BUILD_FOLDER) && cp matlib.mat $(BUILD_FOLDER) && cp smallbox.obj $(BUILD_FOLDER) && 
 COPY_simpleflow			= 	cp grand_canyon.pgm $(BUILD_FOLDER) && cp sand.tga $(BUILD_FOLDER) && cp skymap_b.tga $(BUILD_FOLDER) && cp stone.tga $(BUILD_FOLDER) && cp texture.tga $(BUILD_FOLDER) && cp particleSimulation.cl $(BUILD_FOLDER) && cp compose.frag $(BUILD_FOLDER) && cp curvatureflow.frag $(BUILD_FOLDER) && cp liquidshade.frag $(BUILD_FOLDER) && cp particledepth.frag $(BUILD_FOLDER) && cp particlethickness.frag $(BUILD_FOLDER) && cp particlevelocity.frag $(BUILD_FOLDER) && cp simple.frag $(BUILD_FOLDER) && cp particles.vert $(BUILD_FOLDER) && cp quad.vert $(BUILD_FOLDER) && cp simple.vert $(BUILD_FOLDER) && 
 
 endif
